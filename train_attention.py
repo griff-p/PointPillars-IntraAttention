@@ -37,6 +37,8 @@ def main(args):
 
     if not args.no_cuda:
         pointpillars = PointPillars(nclasses=args.nclasses).cuda()
+        if torch.cuda.device_count() > 1:
+            pointpillars = DataParallel(pointpillars)
     else:
         pointpillars = PointPillars(nclasses=args.nclasses)
     loss_func = Loss()
